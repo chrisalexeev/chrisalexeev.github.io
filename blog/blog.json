@@ -1,0 +1,20 @@
+{
+    "entries": [
+        {
+            "id": 0,
+            "timestamp": null,
+            "title": "Context Management in Python",
+            "tags": ["python","best practices"],
+            "image": null,
+            "body": "<p>When opening a file in Python, either to read or write, a <em>context manager</em> on the <code>open()</code> function should be used. The context manager will automatically close the filestream at the end of the code block, so the developer does not have to manually close (or forget to close) it. So instead of <pre><code>f = open('filename.txt','r')<br>stuff = f.read()<br>f.close()</code></pre>it is better to do <pre><code>with open('filename.txt','r') as f:<br>    stuff = f.read()</code></pre></p>"
+        },
+        {
+            "id": 1,
+            "timestamp": null,
+            "title": "Never Learn CSS",
+            "tags": [],
+            "image": null,
+            "body": "<p>CSS is just awful. Let's all just make uninteresting webpages. Maybe go outside or something.</p>"
+        }
+    ]
+}

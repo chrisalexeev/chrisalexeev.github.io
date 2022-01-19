@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+h1 {
+  font-family: "Raleway", sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+p {
+  font-size: 14px;
+}
+
+header {
+  margin: 10px auto;
+  max-width: 1000px;
+}
+
+section {
+  border: solid darkgrey 3px;
+  padding: 10px 5px;
+  margin: 10px auto;
+  max-width: 1000px;
+}
+
+.color-block div {
+  display: inline-block;
+  width: 32%;
+  height: 100px;
+  vertical-align: middle;
+  color: white;
+  margin: 2px auto;
+  text-align: center;
+}
+
+.color-one {
+  background-color: #b04423;
+}
+
+.color-two {
+  background-color: #99de59;
+}
+
+.color-three {
+  background-color: #fc754c;
+}
+
+.color-four {
+  background-color: #3259fc;
+}
+
+.color-five {
+  background-color: #2c45b0;
+}
+
+.color-block div.black {
+  color: black;
+}
+
+.font-block div {
+  display: inline-block;
+  width: 45%;
+  vertical-align: middle;
+  padding-left: 3px;
+}
+
+.font-block h3 {
+  text-decoration: underline;
+}
+
+.source-code {
+  font-family: "Source Code Pro", monospace;
+}
+
+.open-sans {
+  font-family: "Open Sans", sans-serif;
+}
+
+.raleway {
+  font-family: "Raleway", sans-serif;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
