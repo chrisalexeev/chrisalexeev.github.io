@@ -6,6 +6,8 @@ body {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   color: black;
   margin: 0;
+  background-image: linear-gradient(0deg,white,lightgray);
+  background-size: contain;
 }
 
 nav {
@@ -33,7 +35,7 @@ h1 {
 }
 
 .hero {
-  background-color: #999;
+  background-color: rgb(211, 211, 211);
   padding: 2rem;
   width: 100%;
   text-align: center;

@@ -1,5 +1,5 @@
 async function loadData() {
-    let jsonData = fetch('../../blog/blog.json')
+    let jsonData = fetch('blog.json')
         .then(response => response.json())
         .catch(error => console.log(error));
     return jsonData;
