@@ -7,16 +7,16 @@ html, body {
 .container {
     display: grid;
     grid-template: repeat(3,1fr) / repeat(3,1fr);
-    background-color: black;
+    background-color: var(--dark);
     gap: 5px;
     width: 500px;
     height: 500px;
     margin: auto;
-    border: 5px solid black;
+    border: 5px solid var(--dark);
 }
 
 .square {
-    background-color: white;
+    background-color: var(--light);
     display: grid;
     align-items: center;
     justify-content: center;

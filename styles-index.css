@@ -86,8 +86,8 @@ section h2 {
 .card-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    /* align-items: center;
+    justify-content: center; */
     padding: 20px;
     border: 10px solid darkslategrey;
     border-radius: 25px;
@@ -114,6 +114,17 @@ section h2 {
 .card-image-container img {
     width: 50px;
     margin: 5px;
+    width: 50px;
+    z-index: 1;
+}
+
+.card-image-container img:hover {
+    transform: scale(1.5);
+    z-index: 5;
+}
+
+.card-image-container img {
+    transition: transform 200ms ease;
 }
 
 #contact {
