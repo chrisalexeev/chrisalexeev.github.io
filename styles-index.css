@@ -130,13 +130,24 @@ section h2 {
 #contact {
     background-color: var(--dark);
     color: var(--light);
-    padding-bottom: 50px;
+    padding: 40px 0;
 }
 
-form {
+#contact img {
+    margin-top: 10px;
+}
+
+#contact a {
+    color: var(--light)
+}
+
+#contact img {
+    width: 25px;
+}
+
+form, #contact p {
     margin: auto;
     width: max-content;
-
 }
 
 input {
