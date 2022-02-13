@@ -1,0 +1,197 @@
+h1 {
+    font-size: 3em;
+}
+
+header {
+    background-image: url('public/mood_computers_small.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+
+    color: var(--light);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+header h1, header h2 {
+    z-index: 1;
+    margin: 10px;
+}
+
+header::before {
+    content: '';
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    background-color: rgba(0,0,0,0.7);
+    background-image: linear-gradient(transparent, var(--dark));
+}
+
+section {
+    padding: 0 10px; 
+}
+
+section h2 {
+    text-align: center;
+    font-size: 2em;
+}
+
+#about {
+    background-color: var(--dark);
+    color: var(--light);
+    padding: 20px;
+    padding-bottom: 40px;
+    
+}
+
+#about h2 {
+    margin-bottom: 20px;
+}
+
+#about .button {
+    width: 100%;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 30px;
+    padding: 10px 0;
+    font-size: 1.2em;
+}
+
+.about-content {
+    max-width: 500px;
+    margin: auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    margin: auto;
+    justify-items: center;
+    column-gap: 30px;
+}
+
+#projects {
+    background-color: var(--light);
+}
+
+#projects h2 {
+    margin-bottom: 25px;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 10px solid darkslategrey;
+    border-radius: 25px;
+    margin: 20px 0;
+    width: 320px;
+}
+
+.card-content h3, .card-content p {
+    margin-bottom: 20px;
+}
+
+.card-content h3 {
+    font-size: 1.5em;
+}
+
+.card-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+}
+
+.card-image-container img {
+    width: 50px;
+    margin: 5px;
+}
+
+#contact {
+    background-color: var(--dark);
+    color: var(--light);
+    padding-bottom: 50px;
+}
+
+form {
+    margin: auto;
+    width: max-content;
+
+}
+
+input {
+    width: 100%;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 15px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    background-color: #f8f8f8;
+    resize: none;
+}
+
+input[type=button], input[type=submit] {
+    background-color: var(--accent);
+    width: 100%;
+    border: none;
+    padding: 16px 0;
+    text-decoration: none;
+    margin: 4px 0;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+input[type=reset] {
+    text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--light);
+    margin: 4px 0;
+    padding: 0;
+}
+
+input[type=reset]:hover {
+    color: white;
+}
+
+input[type=reset]:active {
+    color: darkgrey;
+}
+
+textarea {
+    margin-top: 9px;
+}
+
+@media screen and (max-width: 385px) {
+    .grid {
+        grid-template-columns: 1;
+    }
+    .card-content {
+        width: 50%;
+    }
+    .card-image-container {
+        width: 100%;
+    }
+}

@@ -9,17 +9,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
-    <title>Document</title>
+    <link href="styles-index.css" rel="stylesheet">
+    <title>Chris Alexeev</title>
     
 </head>
 
 <body>
     <nav>
         <ul>
+            <li><a href="#">Home</a></li>
             <li><a href="#about">About Me</a></li>
             <li><a href="#projects">Projects</a></li>
-            <li><a href="#">Resume</a></li>
-            <li><a href="#" class="button">Contact</a></li>
+            <li><a href="./resume.html">Resume</a></li>
+            <li><a href="#contact" class="button">Contact</a></li>
         </ul>
     </nav>
     <header>
@@ -52,12 +54,13 @@
         </section>
         <div class="spacer layer1">
         </div>
-        <section id="projects">
+        <section id="projects" class="light">
+            <h2>Projects</h2>
             <div class="grid">
                 <div class="card-content">
-                    <h2>
+                    <h3>
                         Looker DevOps Pipeline
-                    </h2>
+                    </h3>
                     <p>
                         Built a DevOps pipeline to sync Looker content between Dev, Test, Stage, and Production
                         environments.
@@ -68,9 +71,9 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <h2>
+                    <h3>
                         Data Warehouse Monitoring
-                    </h2>
+                    </h3>
                     <p>
                         Established a data monitoring system for our data warehouse to keep track of tasks and data growth.
                     </p>
@@ -81,9 +84,9 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <h2>
+                    <h3>
                         Automated PR Linter
-                    </h2>
+                    </h3>
                     <p>
                         Implemented a linter in Azure DevOps to automatically comment on SQL that did not meet our team's naming standards.
                     </p>
@@ -94,9 +97,9 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <h2>
+                    <h3>
                         Raspberry Pi Home Automation
-                    </h2>
+                    </h3>
                     <p>
                         Built a DevOps pipeline to sync Looker content between Dev, Test, Stage, and Production
                         environments.
@@ -108,9 +111,9 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <h2>
+                    <h3>
                         Codecademy Front-End Course
-                    </h2>
+                    </h3>
                     <p>
                         Built websites using HTML5, CSS3, Vanilla Javascript, and React.
                     </p>
@@ -122,6 +125,32 @@
                     </div>
                 </div>
             </div>
+        </section>
+        <div class="spacer layer2 flip"></div>
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <form action="mailto:chrisalexeev@gmail.com" method="GET" enctype="text/plain">
+                <div>
+                    <label for="name">Name:
+                      <input type="text" name="name" id="name" />
+                    </label>
+                  </div>
+                  <div>
+                    <label for="email">Email:
+                      <input type="text" name="email" id="email" />
+                    </label>
+                  </div>
+                  <div>
+                    <label>Message:</label>
+                    <br>
+                    <textarea name="comments" rows="8" cols="35"></textarea>
+                  </div>
+                  <div>
+                    <input type="submit" name="submit" value="Send" class="button"/>
+                    <input type="reset" name="reset" value="Clear Form"/>
+                  </div>
+                </form>
+            </form>
         </section>
     </main>
 </body>
