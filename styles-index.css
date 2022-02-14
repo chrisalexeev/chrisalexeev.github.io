@@ -211,6 +211,9 @@ textarea {
 }
 
 @media screen and (max-width: 385px) {
+    main {
+        overflow-x: hidden;
+    }
     .grid {
         grid-template-columns: 1fr;
     }
