@@ -103,6 +103,10 @@ section h2 {
     font-size: 1.5em;
 }
 
+.card-content p {
+    margin-bottom: auto;
+}
+
 .card-image-container {
     display: flex;
     align-items: center;
@@ -208,10 +212,10 @@ textarea {
 
 @media screen and (max-width: 385px) {
     .grid {
-        grid-template-columns: 1;
+        grid-template-columns: 1fr;
     }
     .card-content {
-        width: 50%;
+        width: 75%;
     }
     .card-image-container {
         width: 100%;
