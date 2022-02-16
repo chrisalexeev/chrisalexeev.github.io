@@ -1,0 +1,52 @@
+.options {
+    display: flex;
+    width: calc(3 * 300px);
+    margin: 0 auto;
+    margin-bottom: 8px;
+}
+
+input, select {
+    margin-left: 30px
+}
+
+#container {
+    display: grid;
+    grid-template: repeat(20,1fr)/repeat(30,1fr);
+    width: calc(3 * 300px);
+    height: calc(3 * 200px);
+    border: solid black 1px;
+    margin: 0 auto;
+}
+
+.square {
+    border: solid darkslategrey 1px;
+    cursor: pointer;
+}
+
+.square:hover {
+    background-color: lightgrey;
+}
+
+.blocked {
+    background-color: darkslategrey;
+}
+
+.blocked:hover {
+    background-color: rgb(64, 82, 82);
+}
+
+.start {
+    background-color: yellow;
+}
+
+.start:hover {
+    background-color: gold;
+}
+
+.end {
+    background-color: red;
+}
+
+.end:hover {
+    background-color: darkred;
+}
