@@ -5,7 +5,7 @@
     margin-bottom: 8px;
 }
 
-input, select {
+input, select, button {
     margin-left: 30px
 }
 
@@ -49,4 +49,34 @@ input, select {
 
 .end:hover {
     background-color: darkred;
+}
+
+
+
+@keyframes fillout {
+    0% {
+        transform: scale(0.1);
+        background-color: black;
+    }
+    100% {
+        transform: scale(2);
+        background-color: aqua;
+    }
+}
+
+.visited {
+    overflow: hidden;
+    
+}
+
+.visited::before {
+    background-color: aquamarine;
+    border-radius: 50%;
+    content: '';
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    animation: fillout 1000ms ease;
+    animation-fill-mode: forwards;
+    transform-origin: 50% 50%;
 }
