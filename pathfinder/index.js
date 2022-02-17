@@ -29,7 +29,7 @@ class Square {
             switch (mode) {
                 case 'start':
                     if (startingNode)
-                        startingNode_elem.classList.remove('start')
+                        startingNode._elem.classList.remove('start')
                     this._elem.classList.add('start');
                     startingNode = this;
                     break;
