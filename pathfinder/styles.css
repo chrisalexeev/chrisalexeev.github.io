@@ -1,5 +1,27 @@
+html,
+body {
+    font-family: 'Lato' sans-serif;
+}
+
+:root {
+    --start-color: yellow;
+    --start-hover: rgb(255, 255, 181);
+    --end-color: rgb(202, 0, 0);
+    --end-hover: maroon;
+    --wall-color: rgb(64, 82, 82);
+    --wall-hover: rgb(33, 43, 43);
+    --light: #efefef;
+    --light-hover: lightgrey;
+    --dark: darkslategrey;
+    --go-color: green;
+    --go-hover: darkgreen;
+    --reset-color: red;
+    --reset-hover: darkred;
+}
+
 .options {
     display: flex;
+    align-items: center;
     width: calc(3 * 300px);
     margin: 0 auto;
     margin-bottom: 8px;
@@ -9,13 +31,17 @@ input, select, button {
     margin-left: 30px
 }
 
+select {
+    height: fit-content;
+    font-size: 1.2em;
+}
+
 input, label {
     cursor: pointer;
 }
 
-#reset {
+#go {
     margin-left: auto;
-    margin-right: 30px;
 }
 
 #container {
@@ -33,19 +59,19 @@ input, label {
 }
 
 .square:hover {
-    background-color: lightgrey;
+    background-color: var(--light-hover);
 }
 
 .blocked {
-    background-color: darkslategrey;
+    background-color: var(--wall-color);
 }
 
 .blocked:hover {
-    background-color: rgb(64, 82, 82);
+    background-color: var(--wall-hover);
 }
 
 .start {
-    background-color: yellow;
+    background-color: var(--start-color);
 }
 
 .start:hover {
@@ -53,11 +79,11 @@ input, label {
 }
 
 .end {
-    background-color: red;
+    background-color: var(--end-color) !important;
 }
 
 .end:hover {
-    background-color: darkred;
+    background-color: var(--end-hover) !important;
 }
 
 
@@ -89,3 +115,83 @@ input, label {
     animation-fill-mode: forwards;
     transform-origin: 50% 50%;
 }
+
+input[type=radio] {
+    display: none;
+}
+.button-label {
+    display: inline-block;
+    padding: 1em 2em;
+    margin: 0.5em;
+    cursor: pointer;
+    color: var(--dark);
+    border-radius: 0.25em;
+    border: 2px solid var(--dark);
+    background: var(--light);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 -3px 0 rgba(0, 0, 0, 0.22);
+    transition: 0.3s;
+    font-size: 1em;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+}
+  
+  .button-label:hover {
+    background: #d6d6d6;
+    color: #101010;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 -3px 0 rgba(0, 0, 0, 0.32);
+  }
+  .button-label:active {
+    transform: translateY(2px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0px -1px 0 rgba(0, 0, 0, 0.22);
+  }
+  @media (max-width: 40em) {
+    .button-label {
+      padding: 0em 1em 3px;
+      margin: 0.25em;
+    }
+  }
+  
+  #start:checked + .button-label {
+    background: var(--start-color);
+    color: var(--);
+  }
+  #start:checked + .button-label:hover {
+    background: var(--start-hover);
+    color: var(--dark);
+  }
+  
+  #end:checked + .button-label {
+    background: var(--end-color);
+    color: var(--light);
+  }
+  #end:checked + .button-label:hover {
+    background: var(--end-hover);
+    color: var(--light);
+  }
+  
+  #wall:checked + .button-label {
+    background: var(--wall-color);
+    color: var(--light);
+  }
+  #wall:checked + .button-label:hover {
+    background: var(--wall-hover);
+    color: var(--light);
+  }
+
+  #go {
+    background: var(--go-color);
+    color: var(--light);
+  }
+  #go:hover {
+    background: var(--go-hover);
+    color: var(--light);
+  }
+
+  #reset {
+    background: var(--reset-color);
+    color: var(--light);
+  }
+  #reset:hover {
+    background: var(--reset-hover);
+    color: var(--light);
+  }

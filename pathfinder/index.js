@@ -1,10 +1,13 @@
 const container = document.getElementById('container');
 const options = document.getElementsByName('draw-mode');
-const algoSelect = document.getElementById('algorithm')
-const squares = [];
+const algoSelect = document.getElementById('algorithm');
+const go = document.getElementById('go');
+const reset = document.getElementById('reset')
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+let hasGone = false;
+let squares = [];
 let mode = 'start'
 let startingNode = null;
 let endingNode = null;
@@ -26,34 +29,45 @@ class Square {
 
     addEventListeners(square) {
         square.addEventListener('click',e => {
+            if (hasGone) {
+                return;
+            }
             switch (mode) {
                 case 'start':
                     if (startingNode)
                         startingNode._elem.classList.remove('start')
                     this._elem.classList.add('start');
+                    if (!startingNode) {
+                        document.getElementById('end').checked = true;
+                        mode = 'end'
+                    }
                     startingNode = this;
                     break;
                 case 'end':
                     if (endingNode)
                         endingNode._elem.classList.remove('end')
                     this._elem.classList.add('end');
+                    if (!endingNode) {
+                        document.getElementById('wall').checked = true;
+                        mode = 'wall'
+                    }
                     endingNode = this;
-                    break;
-                case 'wall':
-                    this._elem.classList.toggle('blocked');
-                    this.toggleWall()
                     break;
             }
         })
         square.addEventListener('mouseover',e => {
+            if (hasGone) {
+                return;
+            }
             if (mode === 'wall' && drag) {
-                this._elem.classList.toggle('blocked')
                 this.toggleWall()
             }
         })
         square.addEventListener('mousedown',e => {
+            if (hasGone) {
+                return;
+            }
             if (mode === 'wall') {
-                this._elem.classList.toggle('blocked')
                 this.toggleWall()
             }
         })
@@ -87,20 +101,38 @@ class Square {
 
     resetSearched() {
         this._searched = false;
+        this._elem.classList.remove('visited')
     }
 
     toggleWall() {
         this._isWall = !this._isWall;
+        this._elem.classList.toggle('blocked');
     }
 
     addNeighbor(n) {
         this._neighbors.push(n)
+    }
+
+    reset() {
+        this.resetSearched()
+        // TODO: fix all this 
+        this._elem.classList.remove('blocked')
+        this._isWall = false;
+        this.before = null;
+        this._elem.style.cursor = 'pointer';
+        this._elem.classList.remove('start');
+        this._elem.classList.remove('end');
+        this._elem.style.backgroundColor = null;
+            
+        
     }
 }
 
 options.forEach(e => {
     e.addEventListener('click', () => mode = e.id)
 })
+
+// console.log(squares)
 
 for (let i = 0; i < 20; i++) {
     squares.push([])
@@ -117,26 +149,39 @@ for (let i = 0; i < 20; i++) {
     for (let j = 0; j < 30; j++) {
         if (i > 0)
             squares[i][j].addNeighbor(squares[i-1][j])
+        if (j < 29)
+            squares[i][j].addNeighbor(squares[i][j+1])
         if (i < 19)
             squares[i][j].addNeighbor(squares[i+1][j])
         if (j > 0)
             squares[i][j].addNeighbor(squares[i][j-1])
-        if (j < 29)
-            squares[i][j].addNeighbor(squares[i][j+1])
     }
 }
 
-// console.log(squares)
+function initialize() {
+    startingNode = null;
+    endingNode = null;
+    hasGone = false;
+    go.disabled = false;
+    // TODO: fix fix fix
+    document.getElementById("start").checked = true;
+    mode = 'start';
+    squares.forEach(row => {
+        row.forEach(s => {
+            s.reset()
+        })
+    })
+}
 
-async function bfs(start,end) {
+async function bfs() {
     console.log("Starting BFS");
-    let q = [start];
+    let q = [startingNode];
     let count = 0;
     while (q) {
         let node = q.shift();
         if (node.searched) 
             continue;
-        if (node === end) {
+        if (node === endingNode) {
             console.log(count)
             return node;
         }
@@ -153,15 +198,15 @@ async function bfs(start,end) {
     return null;
 }
 
-async function dfs(start,end) {
+async function dfs() {
     console.log("Starting DFS");
-    let q = [start];
+    let q = [startingNode];
     let count = 0;
     while (q) {
         let node = q.pop();
         if (node.searched) 
             continue;
-        if (node === end) {
+        if (node === endingNode) {
             console.log(count)
             return node;
         }
@@ -198,12 +243,20 @@ async function illuminatePath(path) {
 
 async function goListener() {
     if (startingNode && endingNode) {
+        hasGone = true;
+        go.disabled = true;
+        // TODO: make a function
+        for (let i = 0; i < 20; i++) {
+            for (let j = 0; j < 30; j++) {
+                squares[i][j]._elem.style.cursor = 'unset';
+            }
+        }
         switch (algoSelect.value) {
             case 'bfs':
-                result = await bfs(startingNode,endingNode);
+                result = await bfs();
                 break;
             case 'dfs':
-                result = await dfs(startingNode,endingNode);
+                result = await dfs();
                 break;
         }
         
@@ -218,5 +271,5 @@ async function goListener() {
         alert("Need starting and ending node!")
 }
 
-const go = document.getElementById('go');
 go.addEventListener('click', goListener)
+reset.addEventListener('click',initialize)
