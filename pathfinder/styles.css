@@ -10,7 +10,8 @@ body {
     --end-hover: maroon;
     --wall-color: rgb(64, 82, 82);
     --wall-hover: rgb(33, 43, 43);
-    --light: #efefef;
+    /* --light: #efefef; */
+    --light: white;
     --light-hover: lightgrey;
     --dark: darkslategrey;
     --go-color: green;
@@ -51,6 +52,7 @@ input, label {
     height: calc(3 * 200px);
     border: solid black 1px;
     margin: 0 auto;
+    
 }
 
 .square {
@@ -93,27 +95,32 @@ input, label {
         transform: scale(0.1);
         background-color: black;
     }
+    20% {
+        background-color: hsl(180, 100%, 50%);
+    }
     100% {
         transform: scale(2);
-        background-color: aqua;
+        background-color: transparent;
     }
 }
 
 .visited {
     overflow: hidden;
-    
+    background-color: transparent;
+    transition: all 800ms ease 200ms;
 }
 
 .visited::before {
-    background-color: aquamarine;
     border-radius: 50%;
     content: '';
     display: inline-block;
     width: 100%;
     height: 100%;
     animation: fillout 1000ms ease;
-    animation-fill-mode: forwards;
+    /* animation-fill-mode: forwards; */
     transform-origin: 50% 50%;
+    
+    z-index: -1;
 }
 
 input[type=radio] {
