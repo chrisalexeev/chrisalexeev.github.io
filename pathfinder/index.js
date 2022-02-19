@@ -113,8 +113,7 @@ class Square {
         this._searched = true;
         if (!isStart)
             this._elem.classList.add('visited')
-        
-        this._elem.style.background = `hsl(180, 100%,${53-(this.weight * 3)}%)`
+            this._elem.style.background = `hsl(180, 100%,${53-(this.weight * 3)}%)`
     }
 
     resetSearched() {
