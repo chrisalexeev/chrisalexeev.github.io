@@ -111,9 +111,10 @@ class Square {
     markSearched(isStart) {
         // this._elem.style.backgroundColor = `hsl(180, 100%,${50-(this.weight * 3)}%)`;
         this._searched = true;
-        if (!isStart)
+        if (!isStart) {
             this._elem.classList.add('visited')
             this._elem.style.background = `hsl(180, 100%,${53-(this.weight * 3)}%)`
+        }
     }
 
     resetSearched() {
@@ -212,7 +213,7 @@ async function bfs() {
             console.log(count)
             return node;
         }
-        node.markSearched(count === 0 ? true : false);
+        node.markSearched(count === 0);
         node.neighbors.forEach(n => {
             if (!n.isWall && !n.searched) {
                 n.before = node;
@@ -237,7 +238,7 @@ async function dfs() {
             console.log(count)
             return true;
         }
-        node.markSearched(count === 0 ? true : false);
+        node.markSearched(count === 0);
         node.neighbors.forEach(n => {
             if (!n.isWall && !n.searched) {
                 n.before = node;
@@ -289,7 +290,7 @@ async function dijkstras() {
                 n.before = cur;
             }
         })
-        cur.markSearched()
+        cur.markSearched(min === 0)
         min = Infinity;
         minId = -1;
         for (const [key, value] of Object.entries(path_values)) {

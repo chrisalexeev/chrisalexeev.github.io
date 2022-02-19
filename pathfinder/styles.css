@@ -185,6 +185,15 @@ input[type=radio] {
     color: var(--light);
   }
 
+  #addWeight:checked + .button-label {
+    background: grey;
+    color: var(--light);
+  }
+  #addWeight:checked + .button-label:hover {
+    background: darkgrey;
+    color: var(--light);
+  }
+
   #go {
     background: var(--go-color);
     color: var(--light);
