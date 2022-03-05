@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+    <script src="./index.js" defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+        }
+        canvas {
+            background-color: white;
+            border: 2px white solid;
+            width: 720px;
+            height: 480px;
+        }
+        img {
+            display: none;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+        #playerImage1 {
+            transform: scaleX(-1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="canvas0">
+
+        </canvas>
+    </div>
+    
+    <img id="playerImage0" src="player.png">
+    <img id="background" src="background.png">
+    <img id="enemy" src="enemy.png">
+</body>
+</html>
