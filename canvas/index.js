@@ -1,229 +1,227 @@
-window.onload = () => {
-    const canvas = document.getElementById('canvas0');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 720;
-    canvas.height = 480;
-    let lastTime = 0;
-    let enemyTimer = 0;
-    let enemyInterval = Math.random() * 1000 + 500;
-    let enemies = [];
-    let score = 0;
-    let platforms = [];
+const canvas = document.getElementById('canvas0')
+const c = canvas.getContext('2d')
+const platformImg = document.getElementById('platform')
+const playerImg = document.getElementById('playerImage0')
+const background = document.getElementById('background')
 
-    class InputHandler {
-        constructor() {
-            this.keys = []
-            window.addEventListener('keydown', e => {
-                if ((   e.key === 'ArrowUp' ||
-                        e.key === 'ArrowLeft' ||
-                        e.key === 'ArrowRight')
-                        && this.keys.indexOf(e.key) === -1) {
-                    this.keys.push(e.key)
-                }
-            });
-            window.addEventListener('keyup', e => {
-                if (    e.key === 'ArrowUp' ||
-                        e.key === 'ArrowLeft' ||
-                        e.key === 'ArrowRight') {
-                    this.keys.splice(this.keys.indexOf(e.key), 1)
-                }
-            })
-            
-        }
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+const gravity = 0.5
+
+class Player {
+    constructor() {
+        this.x = 100;
+        this.y = 50;
+
+        this.vx = 0;
+        this.vy = 1;
+
+        this.width = 54;
+        this.height = 54;
+
+        this.frameX = 0;
+        this.frameY = 0;
+
+        this.maxFrame = 3;
+        this.fps = 1000 / 20;
+
+        this.isJumping = false;
+
+        this.speed = 5;
+        this.jumpSpeed = 15
     }
 
-    class Player {
-        constructor(gameWidth, gameHeight) {
-            this.gameWidth = gameWidth;
-            this.gameHeight = gameHeight - 35;
-            this.width = 135;
-            this.height = 135;
-            this.x = 0;
-            this.y = this.gameHeight - this.height;
-            this.image = document.getElementById('playerImage0');
-            this.frameX = 0;
-            this.frameY = 0;
-            this.vy = 0;
-            this.weight = 1;
-            this.maxFrame = 3;
-            this.fps = 10;
-            this.frameTimer = 0;
-            this.frameInterval = 1000/this.fps;
-            this.isOnPlatform = false;
-        }
-
-        draw(context) {
-            context.fillStyle = 'white';
-            // context.fillRect(this.x, this.y, this.width, this.height)
-            context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height)
-
-        }
-
-        update(input,dt) {
-            if (this.frameTimer > this.frameInterval && (this.onGround() || this.isOnPlatform)) {
-                if (this.frameX >= this.maxFrame) this.frameX = 0;
-                else this.frameX++;
-                this.frameTimer = 0;
-
-            } else {
-                this.frameTimer += dt;
-            }
-
-            if (input.keys.includes('ArrowRight')) {
-                this.frameY = 0;
-                this.speed = 5;
-
-                
-            } else if (input.keys.includes('ArrowLeft')) {
-                this.frameY = 1;
-                this.speed = -5;
-
-                
-            } else {
-                this.speed = 0;
-                if (this.onGround() || this.isOnPlatform)
-                this.frameX = 0;
-            }
-            if (input.keys.includes('ArrowUp') && (this.onGround() || this.isOnPlatform)) {
-                this.vy -= 20;
-                this.frameX = 1;
-            }
-            this.x += this.speed;
-            if (this.x < 0) this.x = 0;
-            else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
-            this.y += this.vy;
-            if (!this.onGround()) {
-                this.vy += this.weight;
-            } else {
-                this.vy = 0;
-            }
-            if (this.y > this.gameHeight - this.height) this.y = this.gameHeight - this.height
-        }
-
-        onGround() {
-            return this.y >= this.gameHeight - this.height;
-        }
+    draw() {
+        // c.fillStyle = 'red'
+        // c.fillRect(this.x,this.y,this.width,this.height)
+        c.drawImage(playerImg, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height)
     }
 
-    class Platform {
-        constructor(x,y,width,height) {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-        }
+    update() {
+        this.draw();
+        this.y += this.vy;
+        this.x += this.vx;
 
-        draw(context) {
-            context.fillStyle = 'blue';
-            context.fillRect(this.x, this.y, this.width, this.height);
-        }
+        if (this.y + this.vy <= 0)
+            this.vy = 0
+
+        else if (this.y + this.height + this.vy <= canvas.height)
+            this.vy += gravity; 
+        else
+            this.vy =   0
     }
-
-    class Background {
-        constructor(gameWidth, gameHeight) {
-            this.gameWidth = gameWidth
-            this.gameHeight = gameHeight
-            this.image = document.getElementById('background')
-            this.x = 0;
-            this.y = 0;
-            this.width = 2400;
-            this.height = 720;
-        }
-
-        draw(context) {
-            context.drawImage(this.image, this.x, this.y)
-            context.fillStyle = 'rgba(0, 0, 0, 0.5)'
-            context.fillRect(0,0,this.width,this.height)
-        }
-    }
-
-    class Enemy {
-        constructor(gameWidth, gameHeight) {
-            this.gameWidth = gameWidth
-            this.gameHeight = gameHeight
-            this.image = document.getElementById('enemy')
-            this.width = 110;
-            this.height = 100;
-            this.x = this.gameWidth;
-            this.y = this.gameHeight - this.height;
-            this.speed = 8;
-            this.markedForDeletion = false;
-            
-        }
-
-        draw(context) {
-            context.drawImage(this.image, this.x, this.y);
-        }
-
-        update() {
-            this.x -= this.speed;
-            if (this.x < 0 - this.width) {
-                this.markedForDeletion = true;
-                score++;
-            }
-        }
-    }
-
-    function handleEnemies(dt) {
-        if (enemyTimer > enemyInterval) {
-            enemies.push(new Enemy(canvas.width, canvas.height));
-            enemyInterval = enemyInterval < 200 ? 200 : enemyInterval;
-            enemyTimer = 0;
-        } else {
-            enemyTimer += dt;
-        }
-        enemies.forEach(e => {
-            e.draw(ctx);
-            e.update();
-        })
-        enemies = enemies.filter(e => !e.markedForDeletion)
-    }
-
-    function handlePlatforms(context,player) {
-        platforms.forEach(p => {
-            p.draw(context);
-            if (player.y + player.height == p.y &&
-                player.y + player.height + player.vy == p.y
-                // player.x + player.width - 50 >= p.x &&
-                // player.x <= p.x + p.width - 50
-                ) {
-                player.vy = 0;
-                player.isOnPlatform = true;
-            } else {
-                player.isOnPlatform = false;
-            }
-        })
-
-
-        
-    }
-
-    function displayStatusText(context) {
-        context.fillStyle = 'black';
-        context.font = '40px Helvetica';
-        context.fillText(`Score ${score}`, 20, 50)
-    }
-
-    const input = new InputHandler()
-    const player = new Player(canvas.width, canvas.height)
-    const background = new Background(canvas.width, canvas.height)
-    for (let i = 0; i < 5;i++) {
-        platforms.push(new Platform(canvas.width - i * 120,canvas.height - i * 100,200,20))
-    }
-
-    function animate(timestamp) {
-        const dt = timestamp - lastTime;
-        lastTime = timestamp;
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        background.draw(ctx);
-        
-        player.draw(ctx);
-        player.update(input,dt);
-        // handleEnemies(dt)
-        handlePlatforms(ctx,player);
-        displayStatusText(ctx)
-        requestAnimationFrame(animate);
-    }
-
-    animate(0);
 }
+
+class Platform {
+    constructor({ x,y,width,height,image }) {
+        this.x = x;
+        this.y = y;
+
+        this.width = width;
+        this.height = height;
+
+        this.image = image;
+    }
+
+    draw() {
+        c.fillStyle = '#ff66a3'
+        if (this.image)
+            c.drawImage(this.image,this.x,this.y)
+        else
+            c.fillRect(this.x,this.y,this.width,this.height)
+    }
+}
+
+class GenericObject {
+    constructor({ x,y,width,height,image }) {
+        this.x = x;
+        this.y = y;
+
+        this.width = width;
+        this.height = height;
+
+        this.image = image;
+    }
+
+    draw() {
+        c.fillStyle = '#ff66a3'
+        if (this.image)
+            c.drawImage(this.image,this.x,this.y,this.width,this.height)
+        else
+            c.fillRect(this.x,this.y,this.width,this.height)
+    }
+}
+
+const player = new Player();
+const gameBackground = new GenericObject({ x: -1, y: -1, width: canvas.width, height: canvas.height, image: background })
+const genericObjects = [
+    
+]
+const platforms = [
+    new Platform({ x: 0, y: canvas.height - 30, width: 10000, height: 30 }),
+    new Platform({ x: 500, y: canvas.height - 200, width: 300, height: 20, image: platformImg }),
+    new Platform({ x: 1000, y: canvas.height - 300, width: 300, height: 20, image: platformImg })
+]
+const keys = {
+
+    right: {
+        pressed: false
+    },
+    left: {
+        pressed: false
+    },
+    up: {
+        pressed: false
+    }
+}
+player.update();
+
+let scrollOffset = 0;
+let lastTime = 0;
+let dt = 0;
+let fps = 100
+
+
+function animate(ts) {
+    requestAnimationFrame(animate);
+    c.clearRect(0,0,canvas.width,canvas.height)
+    gameBackground.draw();
+
+    genericObjects.forEach(go => {
+        go.draw()
+    })
+
+    dt = ts - lastTime
+    if (dt > fps) {
+        lastTime = ts;
+    }
+    
+
+    platforms.forEach(platform => {
+        platform.draw()
+        if (player.y + player.height <= platform.y &&
+            player.y + player.height + player.vy >= platform.y &&
+            player.x + player.width >= platform.x &&
+            player.x <= platform.x + platform.width) {
+            player.vy = 0;
+            player.isJumping = false;
+        }
+    })
+    
+    player.update();
+    if (keys.right.pressed) {
+        player.frameY = 0;
+        if (dt > fps) {
+            player.frameX = player.frameX < player.maxFrame ? player.frameX + 1 : 0
+        }
+        
+    } else if (keys.left.pressed && scrollOffset >= player.speed) {
+        player.frameY = 1;
+        if (dt > fps) {
+            player.frameX = player.frameX < player.maxFrame ? player.frameX + 1 : 0
+        }
+    } else {
+        player.frameX = 0;
+    }
+
+    if (keys.right.pressed && player.x < 400) {
+        player.vx = player.speed;
+    } else if (keys.left.pressed && player.x > 100 && scrollOffset >= player.speed) {
+        player.vx = -player.speed;
+    } else {
+        player.vx = 0;
+
+        
+        platforms.forEach(platform => {
+            if (keys.right.pressed) {
+                platform.x -= player.speed
+                scrollOffset += player.speed
+            } else if (keys.left.pressed && scrollOffset >= player.speed) {
+                platform.x += player.speed
+                scrollOffset -= player.speed
+            }
+        })
+    }
+
+    c.fillStyle = 'black';
+    c.font = '40px Helvetica';
+    c.fillText(scrollOffset,50,50)
+}
+
+animate()
+
+addEventListener('keydown', ({ key }) => {
+
+    switch (key) {
+        case 'ArrowLeft':
+            keys.left.pressed = true;
+            break;
+        case 'ArrowRight':
+            keys.right.pressed = true;
+            break;
+        case 'ArrowUp':
+            if (!player.isJumping && player.y >= 0) {
+                player.vy = -player.jumpSpeed;
+                player.isJumping = true;
+            }
+            keys.up.pressed = true;
+            break;
+    }
+});
+
+addEventListener('keyup', ({ key }) => {
+    switch (key) {
+        case 'ArrowLeft':
+
+            keys.left.pressed = false;
+            break;
+        case 'ArrowRight':
+
+            keys.right.pressed = false;
+            break;
+        case 'ArrowUp':
+            keys.up.pressed = false;
+            break;
+    }
+});
