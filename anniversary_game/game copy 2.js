@@ -269,7 +269,7 @@ addEventListener('DOMContentLoaded',e => {
         new GenericObject({ x:4800, y: ch - 340, image: hearts }),
         new GenericObject({ x:6600, y: ch - 330, image: pets }),
         new GenericObject({ x:5600, y: ch - 330, image: sun }),
-        new GenericText({ x:5750, y: ch - 100, width: 500, size: '16px', text: '*supposed to be a sun' }),
+        new GenericText({ x:5720, y: ch - 100, width: 500, size: '16px', text: '*supposed to be a sun' }),
     ]
 
     const obstaclePosition = 5200;
