@@ -7,13 +7,71 @@ addEventListener('DOMContentLoaded',e => {
     const tap = document.getElementById('tap')
     const florida = document.getElementById('florida')
     const indy = document.getElementById('indy')
+    const hearts = document.getElementById('hearts')
+    const pets = document.getElementById('pets')
+    const chris = document.getElementById('chris')
+    const sun = document.getElementById('sun')
+    const audio = document.getElementById("audio");
+
+    addEventListener('keydown',e => {
+        if (audio.paused)
+            audio.play()
+    })
+
+    function loop() {
+        audio.play()
+    }
+    
+    audio.addEventListener("ended", loop, false);
 
     canvas.width = innerWidth;
     canvas.height = innerHeight;
     ch = canvas.height
     c.font = '40px Helvetica';
 
-    const gravity = 0.5
+    const gravity = 0.5;
+    let hasWon = false;
+
+    class Win {
+        constructor({ x, y }) {
+            this.x = x;
+            this.y = y;
+
+            this.image = chris;
+
+            this.width = this.image.width;
+            this.height = this.image.height;
+
+            this.offsetY = 0;
+            this.up = true;
+        }
+
+        draw() {
+            c.drawImage(
+                this.image,
+                this.x,
+                this.y - this.offsetY,
+                this.width,
+                this.height
+            )
+        }
+
+        update() {
+            this.draw();
+
+            if (this.up) {
+                this.offsetY += 1.5
+            } else {
+                this.offsetY -= 1.5
+            }
+
+            if (this.offsetY > 14) {
+                this.up = false;
+            } else if (this.offsetY <= 0) {
+                this.up = true;
+            }
+        }
+    }
 
     class Player {
         constructor() {
@@ -34,8 +92,11 @@ addEventListener('DOMContentLoaded',e => {
 
             this.isJumping = false;
 
-            this.speed = 5;
+            this.speed = 6;
             this.jumpSpeed = 15
+
+            this.offsetY = 0;
+            this.up = true;
 
             this.canMove = {
                 left: true,
@@ -55,7 +116,16 @@ addEventListener('DOMContentLoaded',e => {
         draw() {
             // c.fillStyle = 'red'
             // c.fillRect(this.x,this.y,this.width,this.height)
-            c.drawImage(playerImg, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height)
+            c.drawImage(playerImg,
+                this.frameX * this.width,
+                this.frameY * this.height,
+                this.width,
+                this.height,
+                this.x,
+                this.y - this.offsetY,
+                this.width,
+                this.height
+            )
         }
 
         update() {
@@ -70,6 +140,27 @@ addEventListener('DOMContentLoaded',e => {
                 this.vy += gravity; 
             else
                 this.vy =   0
+        }
+
+        win() {
+            this.y = ch - 84
+            this.draw();
+
+            if (this.up) {
+                this.offsetY += 1.5
+            } else {
+                this.offsetY -= 1.5
+            }
+
+            if (this.offsetY > 14) {
+                this.up = false;
+            } else if (this.offsetY <= 0) {
+                this.up = true;
+            }
+
+            this.frameY = 2;
+            this.frameX = 0;
+            
         }
     }
 
@@ -116,9 +207,10 @@ addEventListener('DOMContentLoaded',e => {
     }
 
     class GenericText {
-        constructor({ x,y,width,text }) {
+        constructor({ x,y,width,text,size }) {
             this.x = x;
             this.y = y;
+            this.size = size ? size : '40px'
 
             this.width = width;
 
@@ -146,6 +238,7 @@ addEventListener('DOMContentLoaded',e => {
         }
 
         draw() {
+            c.font = `${this.size} Helvetica`;
             c.fillStyle = 'black';
             if (this.width)
                 this.wrapText(this.text,this.x,this.y,this.width,40)
@@ -167,12 +260,16 @@ addEventListener('DOMContentLoaded',e => {
         new GenericText({ x:5400, y: ch - 450, width: 500, text: 'We\'re a team, a family, and soulmates.' }),
         new GenericText({ x:6000, y: ch - 450, width: 500, text: 'I am so happy we\'re together, and I can\'t wait to continue our life together in the years to come. I am grateful for every day we have together.' }),
         new GenericText({ x:6600, y: ch - 450, width: 500, text: 'Here\'s to you, us, and our precious children.' }),
-        new GenericText({ x:7200, y: ch - 450, width: 500, text: 'Happy anniversary, darling. Love you more than anything.' }),
+        new GenericText({ x:7200, y: ch - 450, width: 500, text: 'Happy anniversary, darling. I love you more than anything.' }),
         
 
         new GenericObject({ x: 1500, y: ch - 300 - 30, image: tap }),
         new GenericObject({ x: 2100, y: ch - 300 - 30, image: florida }),
-        new GenericObject({ x: 2700, y: ch - 400 - 30, image: indy })
+        new GenericObject({ x: 2700, y: ch - 400 - 30, image: indy }),
+        new GenericObject({ x:4800, y: ch - 340, image: hearts }),
+        new GenericObject({ x:6600, y: ch - 330, image: pets }),
+        new GenericObject({ x:5600, y: ch - 330, image: sun }),
+        new GenericText({ x:5700, y: ch - 100, width: 500, size: '16px', text: '*supposed to be a sun' }),
     ]
 
     const obstaclePosition = 5200;
@@ -189,22 +286,10 @@ addEventListener('DOMContentLoaded',e => {
         new Platform({ x: obstaclePosition + 1400, y: canvas.height - 300, width: 50, height: 20 }),
         new Platform({ x: obstaclePosition + 1650, y: canvas.height - 100, width: 50, height: 20 }),
         new Platform({ x: obstaclePosition + 2100, y: canvas.height - 300, width: 50, height: 20 }),
-        new Platform({ x: obstaclePosition + 2200, y: canvas.height - 100, width: 50, height: 20 }),
-
-
-
-
-        
-
-
-
-        // new Platform({ x: 1000, y: canvas.height - 300, width: 300, height: 20 }),
-        // new Platform({ x: 1500, y: ch - 300, width: 300, height: 20 }),
-        // new Platform({ x: 4000, y: ch - 600, width: 300, height: 600 }),
-        // new Platform({ x: 3600, y: ch - 100, width: 100, height: 15 }),
-        // new Platform({ x: 3900, y: ch - 300, width: 100, height: 15 }),
-        // new Platform({ x: 3600, y: ch - 500, width: 100, height: 15 })
+        new Platform({ x: obstaclePosition + 2200, y: canvas.height - 100, width: 50, height: 20 })
     ]
+
+    const win = new Win({ x: 7400, y: ch - 30 - chris.height });
     const keys = {
 
         right: {
@@ -290,74 +375,97 @@ addEventListener('DOMContentLoaded',e => {
 
 
         })
-        
-        
-        if (!player.canMove.up && player.vy < 0) {
-            player.vy = -gravity;
-        } else if (player.canMove.up && keys.up.pressed) {
-            if (!player.isJumping && player.y >= 0) {
-                player.vy = -player.jumpSpeed;
-                player.isJumping = true;
-            }     
-        }
 
-        if (!player.canMove.down && player.vy > 0) {
-            player.vy = 0;
-            player.isJumping = false;
-        }
-
-
-        if (keys.right.pressed) {
-            player.frameY = 0;
-            if (dt > fps) {
-                player.frameX = player.frameX < player.maxFrame ? player.frameX + 1 : 0
-            }
-            
-        } else if (keys.left.pressed) {
-            player.frameY = 1;
-            if (dt > fps) {
-                player.frameX = player.frameX < player.maxFrame ? player.frameX + 1 : 0
-            }
+        if (player.x + player.width >= win.x - 5) {
+            player.canMove.up = false;
+            player.canMove.down = false;
+            player.canMove.left = false;
+            player.canMove.right = false;
+            hasWon = true;
         } else {
-            player.frameX = 0;
-        }
-
-        if (player.vy !== 0) {
-            player.frameX = 1;
-        }
-
-        if (keys.right.pressed && player.canMove.right && player.x < 400) {
-            player.vx = player.speed;
-        } else if (keys.left.pressed && player.canMove.left && player.x > 100) {
-            player.vx = -player.speed;
-        } else {
-            player.vx = 0;
 
             
-            platforms.forEach(platform => {
-                if (keys.right.pressed && player.canMove.right) {
-                    platform.x -= player.speed
-                    scrollOffset += player.speed
-                } else if (keys.left.pressed && player.canMove.left && scrollOffset >= 0) {
-                    platform.x += player.speed
-                    scrollOffset -= player.speed
-                }
-            })
+            
+            
+            if (!player.canMove.up && player.vy < 0) {
+                player.vy = -gravity;
+            } else if (player.canMove.up && keys.up.pressed) {
+                if (!player.isJumping && player.y >= 0) {
+                    player.vy = -player.jumpSpeed;
+                    player.isJumping = true;
+                }     
+            }
 
-            genericObjects.forEach(go => {
-                if (keys.right.pressed && player.canMove.right) {
-                    go.x -= player.speed * 0.6
-                } else if (keys.left.pressed && player.canMove.left && scrollOffset >= 0) {
-                    go.x += player.speed * 0.6
+            if (!player.canMove.down && player.vy > 0) {
+                player.vy = 0;
+                player.isJumping = false;
+            }
+
+
+            if (keys.right.pressed) {
+                player.frameY = 0;
+                if (dt > fps) {
+                    player.frameX = player.frameX < player.maxFrame ? player.frameX + 1 : 0
                 }
-            })
+                
+            } else if (keys.left.pressed) {
+                player.frameY = 1;
+                if (dt > fps) {
+                    player.frameX = player.frameX < player.maxFrame ? player.frameX + 1 : 0
+                }
+            } else {
+                player.frameX = 0;
+            }
+
+            if (player.vy !== 0) {
+                player.frameX = 1;
+            }
+
+            if (keys.right.pressed && player.canMove.right && (player.x < 400 || win.x <= canvas.width - 400)) {
+                player.vx = player.speed;
+            } else if (keys.left.pressed && player.canMove.left && player.x > 100) {
+                player.vx = -player.speed;
+            } else {
+                player.vx = 0;
+
+                
+                platforms.forEach(platform => {
+                    if (keys.right.pressed && player.canMove.right) {
+                        platform.x -= player.speed
+                        scrollOffset += player.speed
+                    } else if (keys.left.pressed && player.canMove.left && scrollOffset >= 0) {
+                        platform.x += player.speed
+                        scrollOffset -= player.speed
+                    }
+                })
+
+                genericObjects.forEach(go => {
+                    if (keys.right.pressed && player.canMove.right) {
+                        go.x -= player.speed * 0.6
+                    } else if (keys.left.pressed && player.canMove.left && scrollOffset >= 0) {
+                        go.x += player.speed * 0.6
+                    }
+                })
+
+                if (keys.right.pressed && player.canMove.right) {
+                    win.x -= player.speed * 0.6
+                } else if (keys.left.pressed && player.canMove.left && scrollOffset >= 0) {
+                    win.x += player.speed * 0.6
+                } 
+            }
         }
 
-        player.update();
+        if (hasWon)
+            player.win()
+        else
+            player.update();
+
         player.canMove.clear();
+        win.update();
 
-        c.fillStyle = 'black'
-        c.fillText(player.x + scrollOffset,50,50)
+
+        // c.fillStyle = 'black'
+        // c.fillText(player.x + scrollOffset,50,50)
     }
 
     animate()
