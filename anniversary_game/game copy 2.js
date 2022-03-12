@@ -1,7 +1,10 @@
-addEventListener('DOMContentLoaded',e => {
+/**
+ * THIS IS BAD CODE AND I AM AWARE
+ */
+
+addEventListener('load',e => {
     const canvas = document.getElementById('canvas0')
     const c = canvas.getContext('2d')
-    const platformImg = document.getElementById('platform')
     const playerImg = document.getElementById('playerImage0')
     const background = document.getElementById('background')
     const tap = document.getElementById('tap')
@@ -206,6 +209,34 @@ addEventListener('DOMContentLoaded',e => {
         }
     }
 
+    class Background {
+        constructor({ x,y,width,height,image,color }) {
+            this.x = x;
+            this.y = y;
+
+            this.width = image ? image.width : width;
+            this.height = image ? image.height : height;
+
+            this.image = image;
+
+            this.color = color ? color : '#ff66a3';
+        }
+
+        draw() {
+            c.fillStyle = this.color
+            if (this.image)
+                c.drawImage(
+                    this.image,
+                    this.x,
+                    this.y,
+                    // this.width,
+                    // this.height
+                )
+            else
+                c.fillRect(this.x,this.y,this.width,this.height)
+        }
+    }
+
     class GenericText {
         constructor({ x,y,width,text,size }) {
             this.x = x;
@@ -248,7 +279,7 @@ addEventListener('DOMContentLoaded',e => {
     }
 
     const player = new Player();
-    const gameBackground = new GenericObject({ x: -1, y: -1, width: canvas.width, height: canvas.height, image: background })
+    const gameBackground = new Background({ x: -1, y: -1, width: canvas.width, height: canvas.height, image: background })
     const genericObjects = [
         new GenericText({ x: 300, y: ch - 450, width: 500, text: 'To my beautiful babe,' }),
         new GenericText({ x: 900, y: ch - 450, width: 500, text: 'A lot has happened this past year.' }),
@@ -453,6 +484,12 @@ addEventListener('DOMContentLoaded',e => {
                     win.x += player.speed * 0.6
                 } 
             }
+        }
+
+        if (win.x - player.x < canvas.width / 2) {
+            player.speed = 10;
+        } else {
+            player.speed = 6;
         }
 
         if (hasWon)
