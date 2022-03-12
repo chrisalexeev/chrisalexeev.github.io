@@ -6,7 +6,7 @@ addEventListener('load',e => {
     const canvas = document.getElementById('canvas0')
     const c = canvas.getContext('2d')
     const playerImg = document.getElementById('playerImage0')
-    const background = document.getElementById('background')
+    // const background = document.getElementById('background')
     const tap = document.getElementById('tap')
     const florida = document.getElementById('florida')
     const indy = document.getElementById('indy')
@@ -209,33 +209,33 @@ addEventListener('load',e => {
         }
     }
 
-    class Background {
-        constructor({ x,y,width,height,image,color }) {
-            this.x = x;
-            this.y = y;
+    // class Background {
+    //     constructor({ x,y,width,height,image,color }) {
+    //         this.x = x;
+    //         this.y = y;
 
-            this.width = image ? image.width : width;
-            this.height = image ? image.height : height;
+    //         this.width = image ? image.width : width;
+    //         this.height = image ? image.height : height;
 
-            this.image = image;
+    //         this.image = image;
 
-            this.color = color ? color : '#ff66a3';
-        }
+    //         this.color = color ? color : '#ff66a3';
+    //     }
 
-        draw() {
-            c.fillStyle = this.color
-            if (this.image)
-                c.drawImage(
-                    this.image,
-                    this.x,
-                    this.y,
-                    // this.width,
-                    // this.height
-                )
-            else
-                c.fillRect(this.x,this.y,this.width,this.height)
-        }
-    }
+    //     draw() {
+    //         c.fillStyle = this.color
+    //         if (this.image)
+    //             c.drawImage(
+    //                 this.image,
+    //                 this.x,
+    //                 this.y,
+    //                 // this.width,
+    //                 // this.height
+    //             )
+    //         else
+    //             c.fillRect(this.x,this.y,this.width,this.height)
+    //     }
+    // }
 
     class GenericText {
         constructor({ x,y,width,text,size }) {
@@ -279,7 +279,7 @@ addEventListener('load',e => {
     }
 
     const player = new Player();
-    const gameBackground = new Background({ x: -1, y: -1, width: canvas.width, height: canvas.height, image: background })
+    // const gameBackground = new Background({ x: -1, y: -1, width: canvas.width, height: canvas.height, image: background })
     const genericObjects = [
         new GenericText({ x: 300, y: ch - 450, width: 500, text: 'To my beautiful babe,' }),
         new GenericText({ x: 900, y: ch - 450, width: 500, text: 'A lot has happened this past year.' }),
@@ -344,7 +344,7 @@ addEventListener('load',e => {
     function animate(ts) {
         requestAnimationFrame(animate);
         c.clearRect(0,0,canvas.width,canvas.height)
-        gameBackground.draw();
+        // gameBackground.draw();
 
         genericObjects.forEach(go => {
             go.draw()
