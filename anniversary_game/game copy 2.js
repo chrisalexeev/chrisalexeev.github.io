@@ -487,7 +487,7 @@ addEventListener('load',e => {
         }
 
         if (win.x - player.x < canvas.width / 2) {
-            player.speed = 10;
+            player.speed = 7;
         } else {
             player.speed = 6;
         }
